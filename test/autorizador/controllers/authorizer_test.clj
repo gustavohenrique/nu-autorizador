@@ -1,6 +1,6 @@
-(ns autorizador.controller-test
+(ns autorizador.controllers.authorizer-test
   (:require [clojure.test :refer :all]
-            [autorizador.controller :refer :all]))
+            [autorizador.controllers.authorizer :refer :all]))
 
 
 (deftest do-action-test

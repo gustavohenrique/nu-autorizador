@@ -1,5 +1,5 @@
-(ns autorizador.core
-  (:use autorizador.controller))
+(ns autorizador.diplomat.stdin
+  (:use autorizador.controllers.authorizer))
 
 (defn- not-blank?
   [line]

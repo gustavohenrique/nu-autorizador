@@ -1,4 +1,4 @@
-(ns autorizador.components
+(ns autorizador.components.json
   (:require [cheshire.core :refer [parse-string generate-string]]))
 
 (defn str->json [input]

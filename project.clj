@@ -6,7 +6,7 @@
   :dependencies [[org.clojure/clojure "1.11.1"]
                  [pjstadig/humane-test-output "0.11.0"]
                  [cheshire "5.11.0"]]
-  :main autorizador.core
+  :main autorizador.diplomat.stdin
   :injections [(require 'pjstadig.humane-test-output)
                      (pjstadig.humane-test-output/activate!)]
   ; :profiles {:test {:plugins [[lein-test-report "0.2.0"]]}}
@@ -14,4 +14,4 @@
   ; :test-report {:summarizers [(comp clojure.pprint/pprint test-report.summary/summarize)]}
   ; :injections [(require 'clojure.pprint)]
   ; :test-report {:reporters [clojure.pprint/pprint]}
-  :repl-options {:init-ns autorizador.core})
+  :repl-options {:init-ns autorizador.diplomat.stdin})
