@@ -1,8 +1,12 @@
 (ns autorizador.core
   (:use autorizador.controller))
 
+(defn- not-blank?
+  [line]
+  (not (clojure.string/blank? line)))
+
 (defn -main []
-  (let [lines (for [line (line-seq (java.io.BufferedReader. *in*))] line)
+  (let [lines (doall (take-while not-blank? (repeatedly read-line)))
         output (do-action lines)]
     (doseq [out output]
       (println out))))

@@ -5,7 +5,7 @@
 ## Usage
 
 ```sh
-lein run $(cat resources/multiple-violations.json)
+cat resources/multiple-violations.json | lein run
 ```
 
 ## Testing
