@@ -4,9 +4,10 @@
             [autorizador.models.currency :as models.currency]))
 
 (def account-skeleton
-  {:account {:active-card s/Bool
-             :available-limit models.currency/Currency}
+  {(s/optional-key :account) {(s/optional-key :active-card) s/Bool
+                              (s/optional-key :available-limit) models.currency/Currency}
    (s/optional-key :violations) [s/Str]
-   (s/optional-key :transactions) [models.transaction/Transaction]})
+   (s/optional-key :transaction) models.transaction/Transaction})
 
 (s/defschema Account account-skeleton)
+(def Accounts [Account])

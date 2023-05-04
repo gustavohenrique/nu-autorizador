@@ -1,10 +1,15 @@
 (ns autorizador.controllers.authorizer
-  (:use [autorizador.logic.account :as a])
-  (:use [autorizador.logic.transaction :as t])
+  (:require [schema.core :as s]
+            [clojure.string :refer [blank?]]
+            [autorizador.logic.account :as a]
+            [autorizador.logic.transaction :as t]
+            [autorizador.models.account :as models.account])
   (:use autorizador.components.json))
 
-(defn- manage-account
-  [states input]
+(s/set-fn-validation! true)
+
+(s/defn manage-account :- models.account/Account
+  [states :- models.account/Accounts, input :- models.account/Account]
   (let [is-account-operation? (contains? input :account)
         is-transaction-operation? (not is-account-operation?)
         is-account-initialized? (a/check-is-initialized states)
@@ -22,10 +27,11 @@
               transaction (:transaction input)]
           (if (not (:active-card account-data))
             (assoc account :violations ["card-not-active"]) 
-            (let [validations (map #(apply % [states transaction]) [a/validate-insufficient-limit
-                                                                    t/validate-high-frequency-small-interval
-                                                                    t/validate-doubled-transaction])
-                  violations (vec (remove nil? validations))]
+            (let [validations (map #(apply % [states transaction])
+                                   [a/validate-insufficient-limit
+                                    t/validate-high-frequency-small-interval
+                                    t/validate-doubled-transaction])
+                  violations (vec (remove blank? validations))]
               (if (empty? violations)
                 {:account (update account-data :available-limit - (get transaction :amount)), :violations [], :transaction transaction}
                 (assoc account :violations violations :transaction transaction)))
@@ -45,6 +51,7 @@
     )))
 
 (defn do-action [json]
+  ; TODO: Pensar em como usar adapter para converter para models
   (let [operations (map #(str->json %) json)
         states (process-operations [] operations)
         accounts (map #(dissoc % :transaction) states)]
